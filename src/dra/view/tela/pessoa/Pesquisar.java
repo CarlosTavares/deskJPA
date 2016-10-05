@@ -148,7 +148,7 @@ public class Pesquisar extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoPesquisarActionPerformed
 
     private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
-        Cadastrar cad = new Cadastrar();
+        Cadastrar cad = new Cadastrar(this.facade);
         cad.setVisible(true);
     }//GEN-LAST:event_botaoCadastrarActionPerformed
 
@@ -157,9 +157,8 @@ public class Pesquisar extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void tabelaPessoasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaPessoasMouseClicked
-        System.out.println("Abre tela de detalhe");
         int linha = tabelaPessoas.getSelectedRow();
-        this.facade.consultar(this.facade.getPessoas().get(linha).getID());
+        this.facade.consultar(linha);
         Detalhar det = new Detalhar(facade);
         det.setVisible(true);
     }//GEN-LAST:event_tabelaPessoasMouseClicked

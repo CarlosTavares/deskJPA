@@ -5,6 +5,10 @@
  */
 package dra.view.tela.pessoa;
 
+import dra.model.Bairro;
+import dra.model.Cidade;
+import dra.model.Estado;
+import dra.model.EstadoCivil;
 import dra.view.PessoaFacade;
 
 /**
@@ -24,7 +28,7 @@ public class Cadastrar extends javax.swing.JFrame {
     public Cadastrar(PessoaFacade facade) {
         initComponents();
         this.facade = facade;
-        this.preencherCampos();
+        this.preencherCombos();
     }
 
     /**
@@ -53,7 +57,7 @@ public class Cadastrar extends javax.swing.JFrame {
         rotuloCidade = new javax.swing.JLabel();
         comboCidade = new javax.swing.JComboBox<>();
         rotuloBairro = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboBairro = new javax.swing.JComboBox<>();
         botaoSalvar = new javax.swing.JButton();
         botaoCancelar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -67,8 +71,6 @@ public class Cadastrar extends javax.swing.JFrame {
 
         rotuloEstadoCivil.setText("Estado Civil:");
 
-        comboEstadoCivil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         rotuloSexo.setText("Sexo:");
 
         grpSexo.add(radioMasculino);
@@ -81,7 +83,11 @@ public class Cadastrar extends javax.swing.JFrame {
 
         rotuloEstado.setText("Estado:");
 
-        comboEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboEstado.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboEstadoItemStateChanged(evt);
+            }
+        });
         comboEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboEstadoActionPerformed(evt);
@@ -90,11 +96,13 @@ public class Cadastrar extends javax.swing.JFrame {
 
         rotuloCidade.setText("Cidade:");
 
-        comboCidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCidade.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboCidadeItemStateChanged(evt);
+            }
+        });
 
         rotuloBairro.setText("Bairro:");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         botaoSalvar.setText("Salvar");
         botaoSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -159,7 +167,7 @@ public class Cadastrar extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(rotuloBairro)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jSeparator1)
         );
@@ -201,7 +209,7 @@ public class Cadastrar extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(rotuloBairro)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -227,8 +235,64 @@ public class Cadastrar extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
-    private void preencherCampos() {
-        System.out.println(this.facade.getPessoa().getNome());
+    private void comboEstadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboEstadoItemStateChanged
+        this.preencherComboCidade();
+    }//GEN-LAST:event_comboEstadoItemStateChanged
+
+    private void comboCidadeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboCidadeItemStateChanged
+        this.preencherComboBairro();
+    }//GEN-LAST:event_comboCidadeItemStateChanged
+
+    private void preencherComboEstadoCivil() {
+        try {
+            comboEstadoCivil.removeAllItems();
+            for(EstadoCivil estadoCivil: this.facade.getEstadosCivis()) {
+                comboEstadoCivil.addItem(estadoCivil);
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro ao preencher combo Estado Civil "+ex.getMessage());
+        }
+    }
+
+    private void preencherComboEstado() {
+        try {
+            comboEstado.removeAllItems();
+            for(Estado estado: this.facade.getEstados()) {
+                comboEstado.addItem(estado);
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro ao preencher combo Estado "+ex.getMessage());
+        }
+    }
+
+    private void preencherComboCidade() {
+        try {
+            comboCidade.removeAllItems();
+            comboBairro.removeAllItems();
+            this.facade.listarCidadesPorEstado((Estado) comboEstado.getSelectedItem());
+            for(Cidade cidade: this.facade.getCidades()) {
+                comboCidade.addItem(cidade);
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro ao preencher combo Cidade "+ex.getMessage());
+        }
+    }
+
+    private void preencherComboBairro() {
+        try {
+            comboBairro.removeAllItems();
+            this.facade.listarBairrosPorCidade((Cidade) comboCidade.getSelectedItem());
+            for(Bairro bairro: this.facade.getBairros()) {
+                comboBairro.addItem(bairro);
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro ao preencher combo Bairro "+ex.getMessage());
+        }
+    }
+
+    private void preencherCombos() {
+        this.preencherComboEstadoCivil();
+        this.preencherComboEstado();
     }    /**
      * @param args the command line arguments
      */
@@ -270,11 +334,11 @@ public class Cadastrar extends javax.swing.JFrame {
     private javax.swing.JTextField campoEndereco;
     private javax.swing.JTextField campoNascimento;
     private javax.swing.JTextField campoNome;
-    private javax.swing.JComboBox<String> comboCidade;
-    private javax.swing.JComboBox<String> comboEstado;
-    private javax.swing.JComboBox<String> comboEstadoCivil;
+    private javax.swing.JComboBox<Bairro> comboBairro;
+    private javax.swing.JComboBox<Cidade> comboCidade;
+    private javax.swing.JComboBox<Estado> comboEstado;
+    private javax.swing.JComboBox<EstadoCivil> comboEstadoCivil;
     private javax.swing.ButtonGroup grpSexo;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JRadioButton radioFeminino;
     private javax.swing.JRadioButton radioMasculino;

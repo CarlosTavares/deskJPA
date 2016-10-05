@@ -58,9 +58,8 @@ public class PessoaFacade {
         }
     }
     
-    public void consultar(Long id) {
-        Pessoa aux = new Pessoa();
-        aux.setID(id);
+    public void consultar(int linha) {
+        Pessoa aux = this.pessoas.get(linha);
         this.pessoa = this.controle.consultar(aux);
     }
     
