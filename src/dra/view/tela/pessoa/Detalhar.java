@@ -5,6 +5,7 @@
  */
 package dra.view.tela.pessoa;
 
+import dra.util.DateUtil;
 import dra.view.PessoaFacade;
 import javax.swing.JOptionPane;
 
@@ -178,8 +179,8 @@ public class Detalhar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAlterarActionPerformed
-        Cadastrar cad = new Cadastrar(this.facade);
-        cad.setVisible(true);
+        Alterar alt = new Alterar(this.facade);
+        alt.setVisible(true);
         //this.dispose();
     }//GEN-LAST:event_botaoAlterarActionPerformed
 
@@ -196,7 +197,7 @@ public class Detalhar extends javax.swing.JFrame {
         lblNome.setText(this.facade.getPessoa().getNome());
 
         lblEstadoCivil.setText(this.facade.getPessoa().getEstadoCivil().getDescricao());
-        lblNascimento.setText(this.facade.getPessoa().getNascimento().toString());
+        lblNascimento.setText(DateUtil.toString(this.facade.getPessoa().getNascimento()));
         lblSexo.setText(this.facade.getPessoa().getSexo().toString());
         lblEndereco.setText(this.facade.getPessoa().getEndereco());
         lblBairro.setText(this.facade.getPessoa().getBairro().getNome());

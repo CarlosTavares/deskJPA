@@ -148,6 +148,7 @@ public class Pesquisar extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoPesquisarActionPerformed
 
     private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
+        this.facade.novaPessoa();
         Cadastrar cad = new Cadastrar(this.facade);
         cad.setVisible(true);
     }//GEN-LAST:event_botaoCadastrarActionPerformed

@@ -27,7 +27,6 @@ public class PessoaControle {
         em.getTransaction().begin();
         dao.inserir(pessoa);
         em.getTransaction().commit();
-        em.close();
     }
 
     public Pessoa consultar(Pessoa pessoa) {
@@ -51,7 +50,6 @@ public class PessoaControle {
         em.getTransaction().begin();
         dao.alterar(pessoa);
         em.getTransaction().commit();
-        em.close();
     }
 
     public void remover(Pessoa pessoa) {
@@ -59,6 +57,5 @@ public class PessoaControle {
         em.getTransaction().begin();
         dao.remover(pessoa);
         em.getTransaction().commit();
-        em.close();
     }
 }

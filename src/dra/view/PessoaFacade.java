@@ -15,7 +15,9 @@ import dra.model.Cidade;
 import dra.model.Estado;
 import dra.model.EstadoCivil;
 import dra.model.Pessoa;
+import dra.model.SexoEnum;
 import dra.util.JPAUtil;
+import java.util.Calendar;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -85,8 +87,18 @@ public class PessoaFacade {
         }
     }
     
-    private void novaPessoa() {
+    public void novaPessoa() {
         this.pessoa = new Pessoa();
+    }
+    
+    public void preencheDadosPessoa(String nome, Calendar nascimento, SexoEnum sexo, 
+            EstadoCivil estadoCivil, String endereco, Bairro bairro) {
+        this.pessoa.setNome(nome);
+        this.pessoa.setNascimento(nascimento);
+        this.pessoa.setSexo(sexo);
+        this.pessoa.setEstadoCivil(estadoCivil);
+        this.pessoa.setEndereco(endereco);
+        this.pessoa.setBairro(bairro);
     }
     
     private void listarEstadosCivis() {

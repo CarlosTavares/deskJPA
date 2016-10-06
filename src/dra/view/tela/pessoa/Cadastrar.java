@@ -9,7 +9,13 @@ import dra.model.Bairro;
 import dra.model.Cidade;
 import dra.model.Estado;
 import dra.model.EstadoCivil;
+import dra.model.SexoEnum;
+import dra.util.DateUtil;
 import dra.view.PessoaFacade;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,7 +23,7 @@ import dra.view.PessoaFacade;
  */
 public class Cadastrar extends javax.swing.JFrame {
 
-    private PessoaFacade facade;
+    protected PessoaFacade facade;
     /**
      * Creates new form Cadastrar
      */
@@ -86,11 +92,6 @@ public class Cadastrar extends javax.swing.JFrame {
         comboEstado.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboEstadoItemStateChanged(evt);
-            }
-        });
-        comboEstado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboEstadoActionPerformed(evt);
             }
         });
 
@@ -222,16 +223,37 @@ public class Cadastrar extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void comboEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEstadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_comboEstadoActionPerformed
-
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
-        // TODO add your handling code here:
+        int resp = JOptionPane.showConfirmDialog(null, "Confirmar Cadastro?", "Cadastrar Pessoa", JOptionPane.YES_NO_OPTION);
+        if (resp==0) {
+            try {
+                this.salvar();
+            } catch (ParseException ex) {
+                Logger.getLogger(Cadastrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
+    protected void salvar() throws ParseException {
+        this.preenchePessoa();
+        this.facade.salvar();
+    }
+    
+    private void preenchePessoa() throws ParseException {
+        this.facade.preencheDadosPessoa(campoNome.getText(), DateUtil.toCalendar(campoNascimento.getText()), 
+                this.selecionaSexo(), (EstadoCivil) comboEstadoCivil.getSelectedItem(), campoEndereco.getText(), 
+                (Bairro) comboBairro.getSelectedItem());
+    }
+    
+    private SexoEnum selecionaSexo() {
+        if (radioMasculino.isSelected()) {
+            return SexoEnum.MASCULINO;
+        } else {
+            return SexoEnum.FEMININO;
+        }
+    }
+
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 
@@ -330,18 +352,18 @@ public class Cadastrar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoCancelar;
-    private javax.swing.JButton botaoSalvar;
-    private javax.swing.JTextField campoEndereco;
-    private javax.swing.JTextField campoNascimento;
-    private javax.swing.JTextField campoNome;
-    private javax.swing.JComboBox<Bairro> comboBairro;
-    private javax.swing.JComboBox<Cidade> comboCidade;
-    private javax.swing.JComboBox<Estado> comboEstado;
-    private javax.swing.JComboBox<EstadoCivil> comboEstadoCivil;
+    protected javax.swing.JButton botaoSalvar;
+    protected javax.swing.JTextField campoEndereco;
+    protected javax.swing.JTextField campoNascimento;
+    protected javax.swing.JTextField campoNome;
+    protected javax.swing.JComboBox<Bairro> comboBairro;
+    protected javax.swing.JComboBox<Cidade> comboCidade;
+    protected javax.swing.JComboBox<Estado> comboEstado;
+    protected javax.swing.JComboBox<EstadoCivil> comboEstadoCivil;
     private javax.swing.ButtonGroup grpSexo;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JRadioButton radioFeminino;
-    private javax.swing.JRadioButton radioMasculino;
+    protected javax.swing.JRadioButton radioFeminino;
+    protected javax.swing.JRadioButton radioMasculino;
     private javax.swing.JLabel rotuloBairro;
     private javax.swing.JLabel rotuloCidade;
     private javax.swing.JLabel rotuloEndereco;
@@ -351,5 +373,4 @@ public class Cadastrar extends javax.swing.JFrame {
     private javax.swing.JLabel rotuloNome;
     private javax.swing.JLabel rotuloSexo;
     // End of variables declaration//GEN-END:variables
-
 }
