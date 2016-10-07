@@ -58,7 +58,7 @@ public class Detalhar extends javax.swing.JFrame {
         botaoAlterar = new javax.swing.JButton();
         botaoExcluir = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Detalhes");
 
         rotuloNome.setText("Nome:");
@@ -125,12 +125,11 @@ public class Detalhar extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(rotuloEstado)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))))
+                                .addComponent(lblEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(botaoAlterar)
                         .addGap(56, 56, 56)
-                        .addComponent(botaoExcluir)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(botaoExcluir)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

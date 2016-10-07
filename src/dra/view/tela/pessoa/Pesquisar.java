@@ -154,6 +154,7 @@ public class Pesquisar extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCadastrarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        this.facade.fechar();
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
 

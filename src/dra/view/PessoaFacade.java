@@ -91,6 +91,10 @@ public class PessoaFacade {
         this.pessoa = new Pessoa();
     }
     
+    public void fechar() {
+        new JPAUtil().close(this.em);
+    }
+    
     public void preencheDadosPessoa(String nome, Calendar nascimento, SexoEnum sexo, 
             EstadoCivil estadoCivil, String endereco, Bairro bairro) {
         this.pessoa.setNome(nome);

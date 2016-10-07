@@ -14,10 +14,14 @@ import javax.persistence.Persistence;
  * @author Carlos.Tavares
  */
 public class JPAUtil {
-    
+
     private static EntityManagerFactory fabrica = Persistence.createEntityManagerFactory("ex1PU");
-    
+
     public EntityManager getEntityManager() {
-           return fabrica.createEntityManager();
+        return fabrica.createEntityManager();
+    }
+
+    public void close(EntityManager em) {
+        em.close();
     }
 }
