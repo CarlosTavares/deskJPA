@@ -8,7 +8,6 @@ package dra.view.tela.pessoa;
 import dra.model.SexoEnum;
 import dra.util.DateUtil;
 import dra.view.PessoaFacade;
-import java.text.ParseException;
 
 /**
  *
