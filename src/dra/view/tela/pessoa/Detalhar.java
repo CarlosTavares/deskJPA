@@ -6,6 +6,7 @@
 package dra.view.tela.pessoa;
 
 import dra.util.DateUtil;
+import dra.util.TextoUtil;
 import dra.view.PessoaFacade;
 import javax.swing.JOptionPane;
 
@@ -54,6 +55,11 @@ public class Detalhar extends javax.swing.JFrame {
         lblCidade = new javax.swing.JLabel();
         rotuloEstado = new javax.swing.JLabel();
         lblEstado = new javax.swing.JLabel();
+        rotuloPais = new javax.swing.JLabel();
+        lblPais = new javax.swing.JLabel();
+        rotuloHabilidade = new javax.swing.JLabel();
+        scrollHabilidades = new javax.swing.JScrollPane();
+        txtHabilidades = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
         botaoAlterar = new javax.swing.JButton();
         botaoExcluir = new javax.swing.JButton();
@@ -76,6 +82,17 @@ public class Detalhar extends javax.swing.JFrame {
         rotuloCidade.setText("Cidade:");
 
         rotuloEstado.setText("Estado:");
+
+        rotuloPais.setText("País:");
+
+        rotuloHabilidade.setText("Habilidades:");
+
+        txtHabilidades.setEditable(false);
+        txtHabilidades.setColumns(20);
+        txtHabilidades.setLineWrap(true);
+        txtHabilidades.setRows(5);
+        txtHabilidades.setWrapStyleWord(true);
+        scrollHabilidades.setViewportView(txtHabilidades);
 
         botaoAlterar.setText("Alterar");
         botaoAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -108,7 +125,14 @@ public class Detalhar extends javax.swing.JFrame {
                             .addComponent(lblNascimento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(botaoAlterar)
+                        .addGap(56, 56, 56)
+                        .addComponent(botaoExcluir)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(rotuloHabilidade, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rotuloPais, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rotuloCidade, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rotuloBairro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(rotuloEndereco, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -125,11 +149,9 @@ public class Detalhar extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(rotuloEstado)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(botaoAlterar)
-                        .addGap(56, 56, 56)
-                        .addComponent(botaoExcluir)))
+                                .addComponent(lblEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                            .addComponent(lblPais, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(scrollHabilidades))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -165,13 +187,21 @@ public class Detalhar extends javax.swing.JFrame {
                     .addComponent(lblCidade)
                     .addComponent(rotuloEstado)
                     .addComponent(lblEstado))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(rotuloPais)
+                    .addComponent(lblPais, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rotuloHabilidade)
+                    .addComponent(scrollHabilidades, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoAlterar)
                     .addComponent(botaoExcluir))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -202,6 +232,8 @@ public class Detalhar extends javax.swing.JFrame {
         lblBairro.setText(this.facade.getPessoa().getBairro().getNome());
         lblCidade.setText(this.facade.getPessoa().getBairro().getCidade().getNome());
         lblEstado.setText(this.facade.getPessoa().getBairro().getCidade().getEstado().getNome());
+        lblPais.setText(this.facade.getPessoa().getBairro().getCidade().getEstado().getPais().getDescricao());
+        txtHabilidades.append(TextoUtil.habilidadesToString(this.facade.getPessoa().getHabilidades()));
     }
     /**
      * @param args the command line arguments
@@ -249,14 +281,19 @@ public class Detalhar extends javax.swing.JFrame {
     private javax.swing.JLabel lblEstadoCivil;
     private javax.swing.JLabel lblNascimento;
     private javax.swing.JLabel lblNome;
+    private javax.swing.JLabel lblPais;
     private javax.swing.JLabel lblSexo;
     private javax.swing.JLabel rotuloBairro;
     private javax.swing.JLabel rotuloCidade;
     private javax.swing.JLabel rotuloEndereco;
     private javax.swing.JLabel rotuloEstado;
     private javax.swing.JLabel rotuloEstadoCivil;
+    private javax.swing.JLabel rotuloHabilidade;
     private javax.swing.JLabel rotuloNascimento;
     private javax.swing.JLabel rotuloNome;
+    private javax.swing.JLabel rotuloPais;
     private javax.swing.JLabel rotuloSexo;
+    private javax.swing.JScrollPane scrollHabilidades;
+    private javax.swing.JTextArea txtHabilidades;
     // End of variables declaration//GEN-END:variables
 }

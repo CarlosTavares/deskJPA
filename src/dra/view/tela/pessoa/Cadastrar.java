@@ -9,10 +9,15 @@ import dra.model.Bairro;
 import dra.model.Cidade;
 import dra.model.Estado;
 import dra.model.EstadoCivil;
+import dra.model.Habilidade;
+import dra.model.Pais;
 import dra.model.SexoEnum;
 import dra.util.DateUtil;
 import dra.view.PessoaFacade;
+import dra.view.tabela.HabilidadeListModel;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -24,6 +29,9 @@ import javax.swing.JOptionPane;
 public class Cadastrar extends javax.swing.JFrame {
 
     protected PessoaFacade facade;
+    protected HabilidadeListModel sourceModel;
+    protected HabilidadeListModel destModel;
+
     /**
      * Creates new form Cadastrar
      */
@@ -58,6 +66,16 @@ public class Cadastrar extends javax.swing.JFrame {
         radioFeminino = new javax.swing.JRadioButton();
         rotuloEndereco = new javax.swing.JLabel();
         campoEndereco = new javax.swing.JTextField();
+        rotuloHabilidades = new javax.swing.JLabel();
+        scrollSourceHab = new javax.swing.JScrollPane();
+        sourceList = new javax.swing.JList<>();
+        botaoAdd = new javax.swing.JButton();
+        botaoRemove = new javax.swing.JButton();
+        rotuloSelecionadas = new javax.swing.JLabel();
+        scrollDestHab = new javax.swing.JScrollPane();
+        destList = new javax.swing.JList<>();
+        rotuloPais = new javax.swing.JLabel();
+        comboPais = new javax.swing.JComboBox<>();
         rotuloEstado = new javax.swing.JLabel();
         comboEstado = new javax.swing.JComboBox<>();
         rotuloCidade = new javax.swing.JLabel();
@@ -86,6 +104,36 @@ public class Cadastrar extends javax.swing.JFrame {
         radioFeminino.setText("Feminino");
 
         rotuloEndereco.setText("Endereço:");
+
+        rotuloHabilidades.setText("Lista de Habilidades");
+
+        scrollSourceHab.setViewportView(sourceList);
+
+        botaoAdd.setText(">>");
+        botaoAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoAddActionPerformed(evt);
+            }
+        });
+
+        botaoRemove.setText("<<");
+        botaoRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoRemoveActionPerformed(evt);
+            }
+        });
+
+        rotuloSelecionadas.setText("Habilidades Selecionadas");
+
+        scrollDestHab.setViewportView(destList);
+
+        rotuloPais.setText("País:");
+
+        comboPais.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboPaisItemStateChanged(evt);
+            }
+        });
 
         rotuloEstado.setText("Estado:");
 
@@ -124,53 +172,76 @@ public class Cadastrar extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rotuloNascimento)
-                            .addComponent(campoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rotuloEstado)
-                            .addComponent(rotuloSexo)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(radioMasculino)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(radioFeminino))
-                            .addComponent(rotuloEndereco))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboEstadoCivil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(scrollSourceHab, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rotuloCidade)
-                                    .addComponent(rotuloEstadoCivil))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(campoEndereco)
-                        .addGap(12, 12, 12))
+                                    .addComponent(botaoAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(botaoRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(rotuloHabilidades, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrollDestHab, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rotuloSelecionadas, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(94, 94, 94))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(comboCidade, 0, 209, Short.MAX_VALUE))
-                            .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rotuloNome))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(rotuloCidade)
+                                    .addComponent(comboCidade, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rotuloPais)
+                                    .addComponent(comboPais, 0, 188, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(rotuloBairro)
+                                            .addComponent(rotuloEstado))
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(comboBairro, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(botaoSalvar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(botaoCancelar)))
                         .addContainerGap())))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(botaoSalvar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botaoCancelar)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rotuloBairro)
-                    .addComponent(comboBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jSeparator1)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rotuloNome)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rotuloNascimento)
+                                    .addComponent(campoNascimento, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(rotuloSexo)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(radioMasculino)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(radioFeminino))
+                                    .addComponent(rotuloEndereco))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(rotuloEstadoCivil)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(comboEstadoCivil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(campoEndereco))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(campoNome)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,24 +265,44 @@ public class Cadastrar extends javax.swing.JFrame {
                             .addComponent(radioMasculino)
                             .addComponent(radioFeminino))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rotuloEndereco)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(campoEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rotuloEstado))
+                        .addComponent(rotuloEndereco))
+                    .addComponent(rotuloEstadoCivil))
+                .addGap(2, 2, 2)
+                .addComponent(campoEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rotuloHabilidades)
+                    .addComponent(rotuloSelecionadas))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(rotuloEstadoCivil)
-                        .addGap(153, 153, 153)
-                        .addComponent(rotuloCidade)))
+                        .addComponent(botaoAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(botaoRemove))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(scrollDestHab, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                            .addComponent(scrollSourceHab, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rotuloPais)
+                            .addComponent(rotuloEstado))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(rotuloBairro)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(comboBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                    .addComponent(comboPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(rotuloBairro)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboBairro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(rotuloCidade)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboCidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -225,7 +316,7 @@ public class Cadastrar extends javax.swing.JFrame {
 
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
         int resp = JOptionPane.showConfirmDialog(null, "Confirmar Cadastro?", "Cadastrar Pessoa", JOptionPane.YES_NO_OPTION);
-        if (resp==0) {
+        if (resp == 0) {
             try {
                 this.salvar();
             } catch (ParseException ex) {
@@ -238,13 +329,13 @@ public class Cadastrar extends javax.swing.JFrame {
         this.preenchePessoa();
         this.facade.salvar();
     }
-    
+
     private void preenchePessoa() throws ParseException {
-        this.facade.preencheDadosPessoa(campoNome.getText(), DateUtil.toCalendar(campoNascimento.getText()), 
-                this.selecionaSexo(), (EstadoCivil) comboEstadoCivil.getSelectedItem(), campoEndereco.getText(), 
-                (Bairro) comboBairro.getSelectedItem());
+        this.facade.preencheDadosPessoa(campoNome.getText(), DateUtil.toCalendar(campoNascimento.getText()),
+                this.selecionaSexo(), (EstadoCivil) comboEstadoCivil.getSelectedItem(), campoEndereco.getText(),
+                (Bairro) comboBairro.getSelectedItem(), destModel.getList());
     }
-    
+
     private SexoEnum selecionaSexo() {
         if (radioMasculino.isSelected()) {
             return SexoEnum.MASCULINO;
@@ -265,25 +356,63 @@ public class Cadastrar extends javax.swing.JFrame {
         this.preencherComboBairro();
     }//GEN-LAST:event_comboCidadeItemStateChanged
 
+    private void comboPaisItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboPaisItemStateChanged
+        this.preencherComboEstado();
+    }//GEN-LAST:event_comboPaisItemStateChanged
+
+    private void botaoAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAddActionPerformed
+        this.addHabilidades();
+    }//GEN-LAST:event_botaoAddActionPerformed
+
+    private void botaoRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoveActionPerformed
+        this.removeHabilidades();
+    }//GEN-LAST:event_botaoRemoveActionPerformed
+
+    protected void addHabilidades() {
+        List<Habilidade> lista = this.sourceList.getSelectedValuesList();
+        this.destModel.addList(lista);
+        this.sourceModel.removeList(lista);
+    }
+
+    protected void removeHabilidades() {
+        List<Habilidade> lista = this.destList.getSelectedValuesList();
+        this.sourceModel.addList(lista);
+        this.destModel.removeList(lista);
+    }
+
     private void preencherComboEstadoCivil() {
         try {
             comboEstadoCivil.removeAllItems();
-            for(EstadoCivil estadoCivil: this.facade.getEstadosCivis()) {
+            for (EstadoCivil estadoCivil : this.facade.getEstadosCivis()) {
                 comboEstadoCivil.addItem(estadoCivil);
             }
         } catch (Exception ex) {
-            System.out.println("Erro ao preencher combo Estado Civil "+ex.getMessage());
+            System.out.println("Erro ao preencher combo Estado Civil " + ex.getMessage());
+        }
+    }
+
+    private void preencherComboPais() {
+        try {
+            comboPais.removeAllItems();
+            for (Pais pais : this.facade.getPaises()) {
+                comboPais.addItem(pais);
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro ao preencher combo Pais " + ex.getMessage());
         }
     }
 
     private void preencherComboEstado() {
         try {
             comboEstado.removeAllItems();
-            for(Estado estado: this.facade.getEstados()) {
+            comboCidade.removeAllItems();
+            comboBairro.removeAllItems();
+            this.facade.listarEstadosPorPais((Pais) comboPais.getSelectedItem());
+            for (Estado estado : this.facade.getEstados()) {
                 comboEstado.addItem(estado);
             }
         } catch (Exception ex) {
-            System.out.println("Erro ao preencher combo Estado "+ex.getMessage());
+            System.out.println("Erro ao preencher combo Estado " + ex.getMessage());
         }
     }
 
@@ -292,11 +421,11 @@ public class Cadastrar extends javax.swing.JFrame {
             comboCidade.removeAllItems();
             comboBairro.removeAllItems();
             this.facade.listarCidadesPorEstado((Estado) comboEstado.getSelectedItem());
-            for(Cidade cidade: this.facade.getCidades()) {
+            for (Cidade cidade : this.facade.getCidades()) {
                 comboCidade.addItem(cidade);
             }
         } catch (Exception ex) {
-            System.out.println("Erro ao preencher combo Cidade "+ex.getMessage());
+            System.out.println("Erro ao preencher combo Cidade " + ex.getMessage());
         }
     }
 
@@ -304,18 +433,33 @@ public class Cadastrar extends javax.swing.JFrame {
         try {
             comboBairro.removeAllItems();
             this.facade.listarBairrosPorCidade((Cidade) comboCidade.getSelectedItem());
-            for(Bairro bairro: this.facade.getBairros()) {
+            for (Bairro bairro : this.facade.getBairros()) {
                 comboBairro.addItem(bairro);
             }
         } catch (Exception ex) {
-            System.out.println("Erro ao preencher combo Bairro "+ex.getMessage());
+            System.out.println("Erro ao preencher combo Bairro " + ex.getMessage());
         }
+    }
+
+    private void preencherSourceHabilidades() {
+        this.sourceModel = new HabilidadeListModel(this.facade.getHabilidades());
+        sourceList.setModel(this.sourceModel);
+    }
+
+    protected void preencherPessoaHabilidades() {
+        List<Habilidade> lista = new ArrayList<>();
+        this.destModel = new HabilidadeListModel(lista);
+        destList.setModel(this.destModel);
     }
 
     private void preencherCombos() {
         this.preencherComboEstadoCivil();
-        this.preencherComboEstado();
-    }    /**
+        this.preencherComboPais();
+        this.preencherSourceHabilidades();
+        this.preencherPessoaHabilidades();
+    }
+
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -351,7 +495,9 @@ public class Cadastrar extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botaoAdd;
     private javax.swing.JButton botaoCancelar;
+    private javax.swing.JButton botaoRemove;
     protected javax.swing.JButton botaoSalvar;
     protected javax.swing.JTextField campoEndereco;
     protected javax.swing.JTextField campoNascimento;
@@ -360,6 +506,8 @@ public class Cadastrar extends javax.swing.JFrame {
     protected javax.swing.JComboBox<Cidade> comboCidade;
     protected javax.swing.JComboBox<Estado> comboEstado;
     protected javax.swing.JComboBox<EstadoCivil> comboEstadoCivil;
+    protected javax.swing.JComboBox<Pais> comboPais;
+    protected javax.swing.JList<Habilidade> destList;
     private javax.swing.ButtonGroup grpSexo;
     private javax.swing.JSeparator jSeparator1;
     protected javax.swing.JRadioButton radioFeminino;
@@ -369,8 +517,14 @@ public class Cadastrar extends javax.swing.JFrame {
     private javax.swing.JLabel rotuloEndereco;
     private javax.swing.JLabel rotuloEstado;
     private javax.swing.JLabel rotuloEstadoCivil;
+    private javax.swing.JLabel rotuloHabilidades;
     private javax.swing.JLabel rotuloNascimento;
     private javax.swing.JLabel rotuloNome;
+    private javax.swing.JLabel rotuloPais;
+    private javax.swing.JLabel rotuloSelecionadas;
     private javax.swing.JLabel rotuloSexo;
+    private javax.swing.JScrollPane scrollDestHab;
+    private javax.swing.JScrollPane scrollSourceHab;
+    protected javax.swing.JList<Habilidade> sourceList;
     // End of variables declaration//GEN-END:variables
 }

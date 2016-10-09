@@ -6,7 +6,9 @@
 package dra.controle;
 
 import dra.dao.DAO;
+import dra.model.Cidade;
 import dra.model.Estado;
+import dra.model.Pais;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -38,5 +40,9 @@ public class EstadoControle {
     public List<Estado> listarTodos() {
         DAO<Estado> dao = new DAO(em,Estado.class);
         return dao.listar();
+    }
+
+    public List<Estado> listarPorPais(Pais pais) {
+        return pais.getEstados();
     }
 }

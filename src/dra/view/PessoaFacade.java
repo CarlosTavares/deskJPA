@@ -9,11 +9,15 @@ import dra.controle.BairroControle;
 import dra.controle.CidadeControle;
 import dra.controle.EstadoCivilControle;
 import dra.controle.EstadoControle;
+import dra.controle.HabilidadeControle;
+import dra.controle.PaisControle;
 import dra.controle.PessoaControle;
 import dra.model.Bairro;
 import dra.model.Cidade;
 import dra.model.Estado;
 import dra.model.EstadoCivil;
+import dra.model.Habilidade;
+import dra.model.Pais;
 import dra.model.Pessoa;
 import dra.model.SexoEnum;
 import dra.util.JPAUtil;
@@ -26,13 +30,15 @@ import javax.persistence.EntityManager;
  * @author Carlos.Tavares
  */
 public class PessoaFacade {
-    
+
     private final EntityManager em;
     private final PessoaControle controle;
     private final EstadoCivilControle controleEstadoCivil;
     private final EstadoControle controleEstado;
     private final CidadeControle controleCidade;
     private final BairroControle controleBairro;
+    private final PaisControle controlePais;
+    private final HabilidadeControle controleHabilidade;
     private String nome;
     private Pessoa pessoa;
     private List<Pessoa> pessoas;
@@ -40,6 +46,8 @@ public class PessoaFacade {
     private List<Estado> estados;
     private List<Cidade> cidades;
     private List<Bairro> bairros;
+    private List<Pais> paises;
+    private List<Habilidade> habilidades;
 
     public PessoaFacade() {
         this.em = new JPAUtil().getEntityManager();
@@ -48,10 +56,13 @@ public class PessoaFacade {
         this.controleEstado = new EstadoControle(em);
         this.controleCidade = new CidadeControle(em);
         this.controleBairro = new BairroControle(em);
+        this.controlePais = new PaisControle(em);
+        this.controleHabilidade = new HabilidadeControle(em);
         this.listarEstadosCivis();
-        this.listarEstados();
+        this.listasPaises();
+        this.listarHabilidades();
     }
-    
+
     public void pesquisar() {
         if (this.nome.isEmpty()) {
             this.pessoas = this.controle.listarTodos();
@@ -59,12 +70,12 @@ public class PessoaFacade {
             this.pessoas = this.controle.listarPorNome(this.nome);
         }
     }
-    
+
     public void consultar(int linha) {
         Pessoa aux = this.pessoas.get(linha);
         this.pessoa = this.controle.consultar(aux);
     }
-    
+
     public void detalhar(String nome) {
         this.novaPessoa();
         for (Pessoa p : this.pessoas) {
@@ -74,49 +85,63 @@ public class PessoaFacade {
             }
         }
     }
-    
+
     public void excluir() {
         this.controle.remover(this.pessoa);
     }
 
     public void salvar() {
-        if (this.pessoa.getID()==0) {
+        if (this.pessoa.getID() == 0) {
             this.controle.inserir(this.pessoa);
         } else {
             this.controle.alterar(this.pessoa);
         }
     }
-    
+
     public void novaPessoa() {
         this.pessoa = new Pessoa();
     }
-    
+
     public void fechar() {
         new JPAUtil().close(this.em);
     }
-    
-    public void preencheDadosPessoa(String nome, Calendar nascimento, SexoEnum sexo, 
-            EstadoCivil estadoCivil, String endereco, Bairro bairro) {
-        this.pessoa.setNome(nome);
-        this.pessoa.setNascimento(nascimento);
+
+    public void preencheDadosPessoa(String nome, Calendar nascimento, SexoEnum sexo,
+            EstadoCivil estadoCivil, String endereco, Bairro bairro, List<Habilidade> habilidades) {
         this.pessoa.setSexo(sexo);
         this.pessoa.setEstadoCivil(estadoCivil);
         this.pessoa.setEndereco(endereco);
         this.pessoa.setBairro(bairro);
+        this.adicionaHabilidadesPessoa(habilidades);
+        this.pessoa.setHabilidades(habilidades);
     }
     
+    private void adicionaHabilidadesPessoa(List<Habilidade> habilidades) {
+        for (Habilidade habilidade : habilidades) {
+            habilidade.setPessoa(this.pessoa);
+        }
+    }
+
     private void listarEstadosCivis() {
         this.estadosCivis = this.controleEstadoCivil.listarTodos();
     }
-    
-    private void listarEstados() {
-        this.estados = this.controleEstado.listarTodos();
+
+    private void listasPaises() {
+        this.paises = this.controlePais.listarTodos();
     }
-    
+
+    private void listarHabilidades() {
+        this.habilidades = this.controleHabilidade.listarTodos();
+    }
+
+    public void listarEstadosPorPais(Pais pais) {
+        this.estados = this.controleEstado.listarPorPais(pais);
+    }
+
     public void listarCidadesPorEstado(Estado estado) {
         this.cidades = this.controleCidade.listarPorEstado(estado);
     }
-    
+
     public void listarBairrosPorCidade(Cidade cidade) {
         this.bairros = this.controleBairro.listarPorCidade(cidade);
     }
@@ -175,5 +200,21 @@ public class PessoaFacade {
 
     public void setBairros(List<Bairro> bairros) {
         this.bairros = bairros;
+    }
+
+    public List<Pais> getPaises() {
+        return paises;
+    }
+
+    public void setPaises(List<Pais> paises) {
+        this.paises = paises;
+    }
+
+    public List<Habilidade> getHabilidades() {
+        return habilidades;
+    }
+
+    public void setHabilidades(List<Habilidade> habilidades) {
+        this.habilidades = habilidades;
     }
 }

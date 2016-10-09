@@ -39,8 +39,16 @@
                           <Component id="lblNome" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="botaoAlterar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                      <Component id="botaoExcluir" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="rotuloHabilidade" alignment="0" max="32767" attributes="0"/>
+                          <Component id="rotuloPais" alignment="0" max="32767" attributes="0"/>
                           <Component id="rotuloCidade" alignment="0" max="32767" attributes="0"/>
                           <Component id="rotuloBairro" alignment="0" max="32767" attributes="0"/>
                           <Component id="rotuloEndereco" alignment="0" max="32767" attributes="0"/>
@@ -60,12 +68,9 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblEstado" pref="144" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="lblPais" alignment="0" max="32767" attributes="0"/>
+                          <Component id="scrollHabilidades" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="botaoAlterar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
-                      <Component id="botaoExcluir" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -112,14 +117,24 @@
                   <Component id="rotuloEstado" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblEstado" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="rotuloPais" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblPais" min="-2" pref="13" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="rotuloHabilidade" min="-2" max="-2" attributes="0"/>
+                  <Component id="scrollHabilidades" min="-2" pref="72" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="17" max="32767" attributes="0"/>
               <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="botaoAlterar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="botaoExcluir" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -181,6 +196,36 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblEstado">
     </Component>
+    <Component class="javax.swing.JLabel" name="rotuloPais">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pa&#xed;s:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblPais">
+    </Component>
+    <Component class="javax.swing.JLabel" name="rotuloHabilidade">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Habilidades:"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="scrollHabilidades">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="txtHabilidades">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="lineWrap" type="boolean" value="true"/>
+            <Property name="rows" type="int" value="5"/>
+            <Property name="wrapStyleWord" type="boolean" value="true"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
     </Component>
     <Component class="javax.swing.JButton" name="botaoAlterar">

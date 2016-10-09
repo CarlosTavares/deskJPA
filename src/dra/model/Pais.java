@@ -10,7 +10,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -18,21 +17,19 @@ import javax.persistence.OneToMany;
  * @author Carlos.Tavares
  */
 @Entity
-public class Estado implements Serializable {
+public class Pais implements Serializable {
 
     @Id
     @GeneratedValue
     private long ID;
     
-    private String nome;
-    @OneToMany(mappedBy = "estado")
-    private List<Cidade> cidades;
-    @ManyToOne
-    private Pais pais;
+    private String descricao;
+    @OneToMany(mappedBy = "pais")
+    private List<Estado> estados;
 
-    public Estado() {
+    public Pais() {
     }
-    
+
     public long getID() {
         return ID;
     }
@@ -41,32 +38,24 @@ public class Estado implements Serializable {
         this.ID = ID;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public List<Cidade> getCidades() {
-        return cidades;
+    public List<Estado> getEstados() {
+        return estados;
     }
 
-    public void setCidades(List<Cidade> cidades) {
-        this.cidades = cidades;
-    }
-
-    public Pais getPais() {
-        return pais;
-    }
-
-    public void setPais(Pais pais) {
-        this.pais = pais;
+    public void setEstados(List<Estado> estados) {
+        this.estados = estados;
     }
 
     @Override
     public String toString() {
-        return this.getNome();
+        return this.getDescricao();
     }
 }

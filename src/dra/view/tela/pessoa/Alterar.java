@@ -8,6 +8,7 @@ package dra.view.tela.pessoa;
 import dra.model.SexoEnum;
 import dra.util.DateUtil;
 import dra.view.PessoaFacade;
+import dra.view.tabela.HabilidadeListModel;
 
 /**
  *
@@ -30,9 +31,18 @@ public class Alterar extends Cadastrar {
             radioFeminino.setSelected(true);
         }
         campoEndereco.setText(facade.getPessoa().getEndereco());
+        comboPais.setSelectedItem(facade.getPessoa().getBairro().getCidade().getEstado().getPais());
         comboEstado.setSelectedItem(facade.getPessoa().getBairro().getCidade().getEstado());
         comboCidade.setSelectedItem(facade.getPessoa().getBairro().getCidade());
         comboBairro.setSelectedItem(facade.getPessoa().getBairro());
+        this.preencherPessoaHabilidades();
         botaoSalvar.setText("Alterar");
+    }
+
+    @Override
+    protected void preencherPessoaHabilidades() {
+        this.destModel = new HabilidadeListModel(this.facade.getPessoa().getHabilidades());
+        sourceModel.removeList(this.facade.getPessoa().getHabilidades());
+        destList.setModel(this.destModel);
     }
 }

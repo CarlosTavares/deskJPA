@@ -6,33 +6,30 @@
 package dra.model;
 
 import java.io.Serializable;
-import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 /**
  *
  * @author Carlos.Tavares
  */
 @Entity
-public class Estado implements Serializable {
+public class Habilidade implements Serializable {
 
     @Id
     @GeneratedValue
     private long ID;
     
-    private String nome;
-    @OneToMany(mappedBy = "estado")
-    private List<Cidade> cidades;
-    @ManyToOne
-    private Pais pais;
+    private String descricao;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Pessoa pessoa;
 
-    public Estado() {
+    public Habilidade() {
     }
-    
+
     public long getID() {
         return ID;
     }
@@ -41,32 +38,24 @@ public class Estado implements Serializable {
         this.ID = ID;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
-    public List<Cidade> getCidades() {
-        return cidades;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setCidades(List<Cidade> cidades) {
-        this.cidades = cidades;
-    }
-
-    public Pais getPais() {
-        return pais;
-    }
-
-    public void setPais(Pais pais) {
-        this.pais = pais;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     @Override
     public String toString() {
-        return this.getNome();
+        return this.getDescricao();
     }
 }

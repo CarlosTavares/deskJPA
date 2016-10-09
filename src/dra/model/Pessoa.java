@@ -6,7 +6,10 @@
 package dra.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -45,6 +49,8 @@ public class Pessoa implements Serializable {
     @JoinColumn(nullable = false)
     @ManyToOne
     private EstadoCivil estadoCivil;
+    @OneToMany(mappedBy = "pessoa")
+    private List<Habilidade> habilidades;
 
     public Pessoa() {
     }
@@ -103,5 +109,13 @@ public class Pessoa implements Serializable {
 
     public void setEstadoCivil(EstadoCivil estadoCivil) {
         this.estadoCivil = estadoCivil;
+    }
+
+    public List<Habilidade> getHabilidades() {
+        return habilidades;
+    }
+
+    public void setHabilidades(List<Habilidade> habilidades) {
+        this.habilidades = habilidades;
     }
 }
