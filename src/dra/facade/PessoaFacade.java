@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dra.view;
+package dra.facade;
 
 import dra.controle.BairroControle;
 import dra.controle.CidadeControle;
@@ -20,6 +20,8 @@ import dra.model.Habilidade;
 import dra.model.Pais;
 import dra.model.Pessoa;
 import dra.model.SexoEnum;
+import dra.model.Telefone;
+import dra.model.TipoFoneEnum;
 import dra.util.JPAUtil;
 import java.util.Calendar;
 import java.util.List;
@@ -48,6 +50,8 @@ public class PessoaFacade {
     private List<Bairro> bairros;
     private List<Pais> paises;
     private List<Habilidade> habilidades;
+    private Telefone telefone;
+    private List<Telefone> telefones;
 
     public PessoaFacade() {
         this.em = new JPAUtil().getEntityManager();
@@ -75,6 +79,10 @@ public class PessoaFacade {
         Pessoa aux = this.pessoas.get(linha);
         this.pessoa = this.controle.consultar(aux);
     }
+    
+    public Telefone consultarTelefone(int linha) {
+        return this.pessoa.getTelefones().get(linha);
+    }
 
     public void detalhar(String nome) {
         this.novaPessoa();
@@ -97,6 +105,26 @@ public class PessoaFacade {
             this.controle.alterar(this.pessoa);
         }
     }
+    
+    public void addTelefone() {
+        this.telefone.setPessoa(this.pessoa);
+        this.pessoa.getTelefones().add(this.telefone);
+        this.novoTelefone();
+    }
+    
+    public void removeTelefone(Telefone telefone) {
+        this.pessoa.getTelefones().remove(telefone);
+    }
+    
+    public void novoTelefone() {
+        this.telefone = new Telefone();
+    }
+    
+    public void preencheDadosTelefone(String area, String numero, TipoFoneEnum tipo) {
+        this.telefone.setArea(area);
+        this.telefone.setNumero(numero);
+        this.telefone.setTipoFone(tipo);
+    }
 
     public void novaPessoa() {
         this.pessoa = new Pessoa();
@@ -108,18 +136,13 @@ public class PessoaFacade {
 
     public void preencheDadosPessoa(String nome, Calendar nascimento, SexoEnum sexo,
             EstadoCivil estadoCivil, String endereco, Bairro bairro, List<Habilidade> habilidades) {
+        this.pessoa.setNome(nome);
+        this.pessoa.setNascimento(nascimento);
         this.pessoa.setSexo(sexo);
         this.pessoa.setEstadoCivil(estadoCivil);
         this.pessoa.setEndereco(endereco);
         this.pessoa.setBairro(bairro);
-        this.adicionaHabilidadesPessoa(habilidades);
         this.pessoa.setHabilidades(habilidades);
-    }
-    
-    private void adicionaHabilidadesPessoa(List<Habilidade> habilidades) {
-        for (Habilidade habilidade : habilidades) {
-            habilidade.setPessoa(this.pessoa);
-        }
     }
 
     private void listarEstadosCivis() {
@@ -216,5 +239,21 @@ public class PessoaFacade {
 
     public void setHabilidades(List<Habilidade> habilidades) {
         this.habilidades = habilidades;
+    }
+
+    public Telefone getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(Telefone telefone) {
+        this.telefone = telefone;
+    }
+
+    public List<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(List<Telefone> telefones) {
+        this.telefones = telefones;
     }
 }

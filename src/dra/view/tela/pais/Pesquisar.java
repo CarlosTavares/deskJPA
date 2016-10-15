@@ -3,24 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dra.view.tela.pessoa;
+package dra.view.tela.pais;
 
-import dra.facade.PessoaFacade;
-import dra.view.tabela.PessoaTabela;
+import dra.facade.PaisFacade;
+import dra.view.tabela.PaisTabela;
 
 /**
  *
  * @author Carlos.Tavares
  */
 public class Pesquisar extends javax.swing.JFrame {
-    
-    private PessoaFacade facade;
+
+    private PaisFacade facade;
 
     /**
      * Creates new form Pesquisar
      */
     public Pesquisar() {
-        this.facade = new PessoaFacade();
+        this.facade = new PaisFacade();
         initComponents();
     }
 
@@ -33,8 +33,8 @@ public class Pesquisar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        rotuloNome = new javax.swing.JLabel();
-        campoNome = new javax.swing.JTextField();
+        rotuloDescricao = new javax.swing.JLabel();
+        campoDescricao = new javax.swing.JTextField();
         botaoPesquisar = new javax.swing.JButton();
         separador1 = new javax.swing.JSeparator();
         painel = new javax.swing.JScrollPane();
@@ -44,9 +44,8 @@ public class Pesquisar extends javax.swing.JFrame {
         botaoCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Pesquisar");
 
-        rotuloNome.setText("Nome:");
+        rotuloDescricao.setText("Descrição:");
 
         botaoPesquisar.setText("Pesquisar");
         botaoPesquisar.addActionListener(new java.awt.event.ActionListener() {
@@ -60,7 +59,7 @@ public class Pesquisar extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "Nascimento", "Cidade"
+                "Descrição"
             }
         ));
         tabelaPessoas.setMinimumSize(new java.awt.Dimension(10, 64));
@@ -100,14 +99,14 @@ public class Pesquisar extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(separador1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(rotuloNome)
+                                .addComponent(rotuloDescricao)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(botaoCadastrar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(botaoCancelar))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(campoNome)
+                                .addComponent(campoDescricao)
                                 .addGap(18, 18, 18)
                                 .addComponent(botaoPesquisar)))
                         .addContainerGap())))
@@ -116,10 +115,10 @@ public class Pesquisar extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(rotuloNome)
+                .addComponent(rotuloDescricao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(campoDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botaoPesquisar))
                 .addGap(18, 18, 18)
                 .addComponent(separador1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -138,23 +137,14 @@ public class Pesquisar extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPesquisarActionPerformed
-        this.facade.setNome(this.campoNome.getText());
+        this.facade.setNome(this.campoDescricao.getText());
         this.facade.pesquisar();
-        this.preencherTabelaPessoa();
+        try {
+            tabelaPessoas.setModel(new PaisTabela(this.facade.getPaises()));
+        } catch (Exception exception) {
+            System.out.println("Erro ao pesquisar paises: "+exception.getMessage());
+        }
     }//GEN-LAST:event_botaoPesquisarActionPerformed
-
-    private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
-        this.facade.novaPessoa();
-        Cadastrar cad = new Cadastrar(this.facade);
-        cad.setVisible(true);
-        System.out.println("point");
-        this.preencherTabelaPessoa();
-    }//GEN-LAST:event_botaoCadastrarActionPerformed
-
-    private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
-        this.facade.fechar();
-        this.dispose();
-    }//GEN-LAST:event_botaoCancelarActionPerformed
 
     private void tabelaPessoasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaPessoasMouseClicked
         int linha = tabelaPessoas.getSelectedRow();
@@ -163,13 +153,17 @@ public class Pesquisar extends javax.swing.JFrame {
         det.setVisible(true);
     }//GEN-LAST:event_tabelaPessoasMouseClicked
 
-    private void preencherTabelaPessoa() {
-        try {
-            tabelaPessoas.setModel(new PessoaTabela(this.facade.getPessoas()));
-        } catch (Exception exception) {
-            System.out.println("Erro ao pesquisar pessoas: "+exception.getMessage());
-        }
-    }
+    private void botaoCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarActionPerformed
+        this.facade.novoPais();
+        Cadastrar cad = new Cadastrar(this.facade);
+        cad.setVisible(true);
+    }//GEN-LAST:event_botaoCadastrarActionPerformed
+
+    private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        this.facade.fechar();
+        this.dispose();
+    }//GEN-LAST:event_botaoCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -209,9 +203,9 @@ public class Pesquisar extends javax.swing.JFrame {
     private javax.swing.JButton botaoCadastrar;
     private javax.swing.JButton botaoCancelar;
     private javax.swing.JButton botaoPesquisar;
-    private javax.swing.JTextField campoNome;
+    private javax.swing.JTextField campoDescricao;
     private javax.swing.JScrollPane painel;
-    private javax.swing.JLabel rotuloNome;
+    private javax.swing.JLabel rotuloDescricao;
     private javax.swing.JSeparator separador1;
     private javax.swing.JSeparator separador2;
     private javax.swing.JTable tabelaPessoas;

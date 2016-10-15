@@ -6,11 +6,13 @@
 package dra.model;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -22,12 +24,13 @@ public class Habilidade implements Serializable {
     @Id
     @GeneratedValue
     private long ID;
-    
+
     private String descricao;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Pessoa pessoa;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "habilidades")
+    private List<Pessoa> pessoas;
 
     public Habilidade() {
+        this.pessoas = new ArrayList<>();
     }
 
     public long getID() {
@@ -46,12 +49,12 @@ public class Habilidade implements Serializable {
         this.descricao = descricao;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
+    public List<Pessoa> getPessoas() {
+        return pessoas;
     }
 
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
+    public void setPessoas(List<Pessoa> pessoas) {
+        this.pessoas = pessoas;
     }
 
     @Override

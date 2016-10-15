@@ -7,6 +7,7 @@ package dra.controle;
 
 import dra.dao.DAO;
 import dra.model.Pais;
+import dra.model.Pessoa;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -29,8 +30,33 @@ public class PaisControle {
         em.getTransaction().commit();
     }
 
+    public Pais consultar(Pais pais) {
+        DAO<Pais> dao = new DAO(em,Pais.class);
+        return dao.consultar(pais.getID());
+    }
+    
     public List<Pais> listarTodos() {
         DAO<Pais> dao = new DAO(em, Pais.class);
         return dao.listar();
+    }
+
+    public List<Pais> listarPorNome(String nome) {
+        DAO<Pais> dao = new DAO(em,Pais.class);
+        String query = "select o from Pais o where o.descricao like '%"+nome+"%'";
+        return dao.listarPorQuery(query);
+    }
+
+    public void alterar(Pais pais) {
+        DAO<Pais> dao = new DAO(em,Pais.class);
+        em.getTransaction().begin();
+        dao.alterar(pais);
+        em.getTransaction().commit();
+    }
+
+    public void remover(Pais pais) {
+        DAO<Pais> dao = new DAO(em,Pais.class);
+        em.getTransaction().begin();
+        dao.remover(pais);
+        em.getTransaction().commit();
     }
 }

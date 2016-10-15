@@ -14,9 +14,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -28,11 +31,11 @@ import javax.persistence.TemporalType;
  */
 @Entity
 public class Pessoa implements Serializable {
-    
+
     @Id
     @GeneratedValue
     private long ID;
-    
+
     @Column(nullable = false, unique = true, length = 100)
     private String nome;
     @Column(nullable = false)
@@ -49,10 +52,19 @@ public class Pessoa implements Serializable {
     @JoinColumn(nullable = false)
     @ManyToOne
     private EstadoCivil estadoCivil;
-    @OneToMany(mappedBy = "pessoa")
+
+    @OneToMany(mappedBy = "pessoa",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Telefone> telefones;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "pessoa_habilidades", joinColumns = {
+        @JoinColumn(name = "pessoa_ID", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "habilidade_ID", nullable = false)})
     private List<Habilidade> habilidades;
 
     public Pessoa() {
+        this.habilidades = new ArrayList<>();
+        this.telefones = new ArrayList<>();
     }
 
     public long getID() {
@@ -117,5 +129,13 @@ public class Pessoa implements Serializable {
 
     public void setHabilidades(List<Habilidade> habilidades) {
         this.habilidades = habilidades;
+    }
+
+    public List<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(List<Telefone> telefones) {
+        this.telefones = telefones;
     }
 }

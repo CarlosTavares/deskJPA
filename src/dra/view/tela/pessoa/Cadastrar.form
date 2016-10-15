@@ -106,11 +106,12 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="comboEstadoCivil" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Component id="rotuloEstadoCivil" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Component id="comboEstadoCivil" max="32767" attributes="0"/>
+                                  <Component id="btnTelefones" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -150,6 +151,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="radioMasculino" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="radioFeminino" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnTelefones" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="rotuloEndereco" min="-2" max="-2" attributes="0"/>
@@ -271,6 +273,14 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="4"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnTelefones">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Telefones"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTelefonesActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="rotuloEndereco">
       <Properties>

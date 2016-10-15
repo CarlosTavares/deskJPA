@@ -7,7 +7,7 @@ package dra.view.tela.pessoa;
 
 import dra.util.DateUtil;
 import dra.util.TextoUtil;
-import dra.view.PessoaFacade;
+import dra.facade.PessoaFacade;
 import javax.swing.JOptionPane;
 
 /**
@@ -63,6 +63,7 @@ public class Detalhar extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         botaoAlterar = new javax.swing.JButton();
         botaoExcluir = new javax.swing.JButton();
+        botaoCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Detalhes");
@@ -108,6 +109,13 @@ public class Detalhar extends javax.swing.JFrame {
             }
         });
 
+        botaoCancelar.setText("Cancelar");
+        botaoCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,7 +136,8 @@ public class Detalhar extends javax.swing.JFrame {
                         .addComponent(botaoAlterar)
                         .addGap(56, 56, 56)
                         .addComponent(botaoExcluir)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botaoCancelar))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(rotuloHabilidade, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -200,7 +209,8 @@ public class Detalhar extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoAlterar)
-                    .addComponent(botaoExcluir))
+                    .addComponent(botaoExcluir)
+                    .addComponent(botaoCancelar))
                 .addContainerGap())
         );
 
@@ -220,6 +230,10 @@ public class Detalhar extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_botaoExcluirActionPerformed
+
+    private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_botaoCancelarActionPerformed
 
 
     private void preencherCampos() {
@@ -272,6 +286,7 @@ public class Detalhar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoAlterar;
+    private javax.swing.JButton botaoCancelar;
     private javax.swing.JButton botaoExcluir;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblBairro;

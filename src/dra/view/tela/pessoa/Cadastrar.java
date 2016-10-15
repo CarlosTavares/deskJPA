@@ -13,8 +13,9 @@ import dra.model.Habilidade;
 import dra.model.Pais;
 import dra.model.SexoEnum;
 import dra.util.DateUtil;
-import dra.view.PessoaFacade;
+import dra.facade.PessoaFacade;
 import dra.view.tabela.HabilidadeListModel;
+import dra.view.tela.pessoa.telefone.Telefones;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,7 @@ public class Cadastrar extends javax.swing.JFrame {
         rotuloSexo = new javax.swing.JLabel();
         radioMasculino = new javax.swing.JRadioButton();
         radioFeminino = new javax.swing.JRadioButton();
+        btnTelefones = new javax.swing.JButton();
         rotuloEndereco = new javax.swing.JLabel();
         campoEndereco = new javax.swing.JTextField();
         rotuloHabilidades = new javax.swing.JLabel();
@@ -102,6 +104,13 @@ public class Cadastrar extends javax.swing.JFrame {
 
         grpSexo.add(radioFeminino);
         radioFeminino.setText("Feminino");
+
+        btnTelefones.setText("Telefones");
+        btnTelefones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTelefonesActionPerformed(evt);
+            }
+        });
 
         rotuloEndereco.setText("Endereço:");
 
@@ -231,10 +240,11 @@ public class Cadastrar extends javax.swing.JFrame {
                                     .addComponent(rotuloEndereco))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboEstadoCivil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(rotuloEstadoCivil)
                                         .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(comboEstadoCivil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(btnTelefones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(campoEndereco))
@@ -263,7 +273,8 @@ public class Cadastrar extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(radioMasculino)
-                            .addComponent(radioFeminino))
+                            .addComponent(radioFeminino)
+                            .addComponent(btnTelefones, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(rotuloEndereco))
                     .addComponent(rotuloEstadoCivil))
@@ -367,6 +378,11 @@ public class Cadastrar extends javax.swing.JFrame {
     private void botaoRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoRemoveActionPerformed
         this.removeHabilidades();
     }//GEN-LAST:event_botaoRemoveActionPerformed
+
+    private void btnTelefonesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTelefonesActionPerformed
+        Telefones tel = new Telefones(this.facade);
+        tel.setVisible(true);
+    }//GEN-LAST:event_btnTelefonesActionPerformed
 
     protected void addHabilidades() {
         List<Habilidade> lista = this.sourceList.getSelectedValuesList();
@@ -499,6 +515,7 @@ public class Cadastrar extends javax.swing.JFrame {
     private javax.swing.JButton botaoCancelar;
     private javax.swing.JButton botaoRemove;
     protected javax.swing.JButton botaoSalvar;
+    private javax.swing.JButton btnTelefones;
     protected javax.swing.JTextField campoEndereco;
     protected javax.swing.JTextField campoNascimento;
     protected javax.swing.JTextField campoNome;

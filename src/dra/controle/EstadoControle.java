@@ -6,7 +6,6 @@
 package dra.controle;
 
 import dra.dao.DAO;
-import dra.model.Cidade;
 import dra.model.Estado;
 import dra.model.Pais;
 import java.util.List;
@@ -44,5 +43,22 @@ public class EstadoControle {
 
     public List<Estado> listarPorPais(Pais pais) {
         return pais.getEstados();
+    }
+
+    public List<Estado> listarPorNome(String nome) {
+        DAO<Estado> dao = new DAO(em,Estado.class);
+        String query = "select o from Estado o where o.nome like '%"+nome+"%'";
+        return dao.listarPorQuery(query);
+    }
+
+    public void remover(Estado estado) {
+        DAO<Estado> dao = new DAO(em,Estado.class);
+        em.getTransaction().begin();
+        dao.remover(estado);
+        em.getTransaction().commit();
+    }
+
+    public void alterar(Estado estado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

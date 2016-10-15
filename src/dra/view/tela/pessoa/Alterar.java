@@ -7,7 +7,7 @@ package dra.view.tela.pessoa;
 
 import dra.model.SexoEnum;
 import dra.util.DateUtil;
-import dra.view.PessoaFacade;
+import dra.facade.PessoaFacade;
 import dra.view.tabela.HabilidadeListModel;
 
 /**
